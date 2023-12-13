@@ -16,7 +16,7 @@ class HelpScreen extends StatelessWidget {
       ),
       body:const Center(
         child: Text('1. How do I navigate through the app?'
-                     'To navigate through the app,'
+                     'To navigate through the App,'
                     ' use the bottom navigation bar.'
                     ' You can switch between different sections'
                     ' such as Home, Search, and Profile.',
