@@ -6,7 +6,15 @@ class SignupScreen extends StatelessWidget {
   @override
    Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title:const Text("Sign Up")),
+      backgroundColor: Colors.black,
+
+      appBar: AppBar(title:const Text("Sign Up",
+      style: TextStyle(
+        color: Colors.blue,
+      ),
+      ),
+      backgroundColor: Colors.black,
+      ),
       body: Center(
       child: Column(
        mainAxisAlignment: MainAxisAlignment.center,
@@ -15,7 +23,7 @@ class SignupScreen extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child: const  Padding(
@@ -23,7 +31,9 @@ class SignupScreen extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Username',
+            labelStyle: TextStyle(color: Colors.white),
             hintText: 'Enter your user name',
+             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
           ),
          ),
@@ -35,7 +45,7 @@ class SignupScreen extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child: const  Padding(
@@ -43,7 +53,9 @@ class SignupScreen extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Password',
+             labelStyle: TextStyle(color: Colors.white),
             hintText: 'Enter your Password',
+             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
           ),
          ),
@@ -55,7 +67,7 @@ class SignupScreen extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child: const  Padding(
@@ -63,7 +75,9 @@ class SignupScreen extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Conform Password',
+             labelStyle: TextStyle(color: Colors.white),
             hintText: 'Enter same Password',
+             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
           ),
          ),
@@ -75,8 +89,14 @@ class SignupScreen extends StatelessWidget {
           onPressed: (){
           Get.toNamed(home);
         },
-        
-        child:const Text('Sign Up'),
+        child:const Text('Sign Up',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
         ),
        
        const SizedBox(height: 20),
@@ -84,7 +104,11 @@ class SignupScreen extends StatelessWidget {
         {
              Get.toNamed(login);
         },
-        child:const Text('Already have an account? Log In'),
+        child:const Text('Already have an account? Log In',
+        style: TextStyle(
+          color: Colors.red,
+        ),
+        ),
         ),
        ],
       ),

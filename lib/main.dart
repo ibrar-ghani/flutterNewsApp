@@ -21,11 +21,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Routing Exp',
+      title: 'News App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        colorSchemeSeed: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: login,

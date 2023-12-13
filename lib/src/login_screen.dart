@@ -6,7 +6,14 @@ class LoginScreen extends StatelessWidget{
 @override
 Widget build(BuildContext context){
  return Scaffold(
-  appBar: AppBar(title:const Text('Log In')),
+  backgroundColor: Colors.black,
+  appBar: AppBar(title:const Text('Log In',
+  style: TextStyle(
+    color: Colors.blueAccent,
+  ),
+  ),
+  backgroundColor: Colors.black,
+  ),
   body: Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -15,7 +22,7 @@ Widget build(BuildContext context){
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child: const  Padding(
@@ -23,7 +30,9 @@ Widget build(BuildContext context){
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Username',
+            labelStyle: TextStyle(color: Colors.white),
             hintText: 'Enter your user name',
+            hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
           ),
          ),
@@ -35,7 +44,7 @@ Widget build(BuildContext context){
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child: const  Padding(
@@ -43,7 +52,9 @@ Widget build(BuildContext context){
         child: TextField(
           decoration: InputDecoration(
             labelText: 'Password',
+            labelStyle:TextStyle( color: Colors.white),
             hintText: 'Enter your Password',
+             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
           ),
          ),
@@ -54,14 +65,25 @@ Widget build(BuildContext context){
         ElevatedButton(onPressed: () {
         Get.toNamed(home);
         },
-        child:const Text("LogIn"),
+        child:const Text("LogIn",
+        style: TextStyle(
+            color: Colors.white,
+        ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
         ),
        const SizedBox(height: 20),
        TextButton(onPressed: ()
        {
        Get.toNamed(signup);
        },
-       child:const Text("Don't have an account? Sign Up"),
+       child:const Text("Don't have an account? Sign Up",
+       style: TextStyle(
+        color: Colors.red,
+       ),
+       ),
        ),
       ],
     ),
