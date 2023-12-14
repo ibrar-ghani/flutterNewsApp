@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:routingexample/routes.dart';
 import 'package:flutter/material.dart';
 class LoginScreen extends StatelessWidget{
-  // const LoginScreen({super.key});
+  const LoginScreen({super.key});
 @override
 Widget build(BuildContext context){
  return Scaffold(
-  backgroundColor: Colors.black,
+  backgroundColor: Colors.indigo,
   appBar: AppBar(title:const Text('Log In',
   style: TextStyle(
     color: Colors.blueAccent,
@@ -65,13 +65,13 @@ Widget build(BuildContext context){
         ElevatedButton(onPressed: () {
         Get.toNamed(home);
         },
+         style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
         child:const Text("LogIn",
         style: TextStyle(
             color: Colors.white,
         ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
         ),
         ),
        const SizedBox(height: 20),
@@ -81,7 +81,7 @@ Widget build(BuildContext context){
        },
        child:const Text("Don't have an account? Sign Up",
        style: TextStyle(
-        color: Colors.red,
+        color: Colors.redAccent,
        ),
        ),
        ),
