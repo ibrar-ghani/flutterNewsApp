@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
   @override
@@ -7,7 +9,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPage> {
-  List<String> searchResults = [];
+  List<Map<String,dynamic>> searchResults = [];
   
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,10 @@ class SearchPageState extends State<SearchPage> {
             child: ListView.builder(
               itemCount: searchResults.length,
               itemBuilder: (context, index) {
+                final result=searchResults[index];
                 return ListTile(
-                  title: Text(searchResults[index]),
+                  title: Text(result['title']),
+                  subtitle: Text(result['description']),
                   // Add additional details or actions as needed
                 );
               },
@@ -50,18 +54,25 @@ class SearchPageState extends State<SearchPage> {
     );
   }
 
-  // Function to update search results based on the query
-  void updateSearchResults(String query) {
-    // For simplicity, a basic implementation is used here.
-    // In a real-world scenario, you might perform a search operation
-    // using a database, API, or other data source.
-    setState(() {
-      searchResults = [
-        'Result 1 for $query',
-        'Result 2 for $query',
-        'Result 3 for $query',
-        // Add more results as needed
-      ];
-    });
+ // Function to update search results based on the query using an API
+  Future<void> updateSearchResults(String query) async {
+    // Replace 'your_api_key_here' with your actual API key
+    final response = await http.get(
+      Uri.parse('https://newsapi.org/v2/everything?q=bitcoin&apiKey=06d5928e7e9c42939b110b9ab671e75a'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (responseData['status'] == 'ok') {
+        final List<dynamic> articles = responseData['articles'];
+        setState(() {
+          searchResults = articles.cast<Map<String, dynamic>>();
+        });
+      } else {
+        throw Exception('API returned an error: ${responseData['message']}');
+      }
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 }

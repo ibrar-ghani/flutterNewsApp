@@ -6,7 +6,7 @@ class LoginScreen extends StatelessWidget{
 @override
 Widget build(BuildContext context){
  return Scaffold(
-  backgroundColor: Colors.black,
+  backgroundColor: Colors.indigo,
   appBar: AppBar(title:const Text('Log In',
   style: TextStyle(
     color: Colors.blueAccent,
@@ -39,7 +39,7 @@ Widget build(BuildContext context){
         ),
           ),
        ),
-      const SizedBox(height: 20,),
+      const SizedBox(height: 20),
       Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -81,7 +81,7 @@ Widget build(BuildContext context){
        },
        child:const Text("Don't have an account? Sign Up",
        style: TextStyle(
-        color: Colors.red,
+        color: Colors.redAccent,
        ),
        ),
        ),

@@ -6,7 +6,7 @@ class SignupScreen extends StatelessWidget {
   @override
    Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.indigo,
 
       appBar: AppBar(title:const Text("Sign Up",
       style: TextStyle(
@@ -106,7 +106,7 @@ class SignupScreen extends StatelessWidget {
         },
         child:const Text('Already have an account? Log In',
         style: TextStyle(
-          color: Colors.red,
+          color: Colors.redAccent,
         ),
         ),
         ),

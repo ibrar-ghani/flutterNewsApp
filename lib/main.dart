@@ -22,9 +22,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'News App',
-      theme: ThemeData(
-        colorSchemeSeed: Colors.white,
-      ),
       debugShowCheckedModeBanner: false,
       initialRoute: login,
       getPages: [
