@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:routingexample/routes.dart';
 import 'package:flutter/material.dart';
 class LoginScreen extends StatelessWidget{
-  // const LoginScreen({super.key});
+  const LoginScreen({super.key});
 @override
 Widget build(BuildContext context){
  return Scaffold(
@@ -39,7 +39,7 @@ Widget build(BuildContext context){
         ),
           ),
        ),
-      const SizedBox(height: 20),
+      const SizedBox(height: 20,),
       Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -65,13 +65,13 @@ Widget build(BuildContext context){
         ElevatedButton(onPressed: () {
         Get.toNamed(home);
         },
+         style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
         child:const Text("LogIn",
         style: TextStyle(
             color: Colors.white,
         ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
         ),
         ),
        const SizedBox(height: 20),

@@ -28,14 +28,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: login,
       getPages: [
-        GetPage(name: login, page: () => LoginScreen()),
-        GetPage(name: signup, page: () =>  SignupScreen()),
-        GetPage(name: home, page: () =>   HomeScreen()),
-        GetPage(name: search, page: ()=> SearchPage()),
-        GetPage(name: profile, page: ()=> ProfilePage()),
-        GetPage(name: about, page: ()=> AboutUsScreen()),
-        GetPage(name: contact, page: ()=>  ContactUsScreen()),
-        GetPage(name: help, page: ()=> HelpScreen()),
+        GetPage(name: login, page: () =>const LoginScreen()),
+        GetPage(name: signup, page: () =>const  SignupScreen()),
+        GetPage(name: home, page: () => const  HomeScreen()),
+        GetPage(name: search, page: ()=> const SearchPage()),
+        GetPage(name: profile, page: ()=> const  ProfilePage()),
+        GetPage(name: about, page: ()=> const AboutUsScreen()),
+        GetPage(name: contact, page: ()=> const  ContactUsScreen()),
+        GetPage(name: help, page: ()=> const HelpScreen()),
       ],
     );
   }

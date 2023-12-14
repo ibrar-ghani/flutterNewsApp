@@ -3,7 +3,7 @@ import 'package:routingexample/src/news_screen.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/src/profile_page.dart';
 class HomeScreen extends StatelessWidget{
-   // const HomeScreen({Key? key}) : super(key: key);
+   const HomeScreen({super.key});
 @override
 Widget build (BuildContext context){
   return Scaffold(
@@ -32,19 +32,19 @@ Widget build (BuildContext context){
         )
     ],
     ),
-     body:  NewsScreen(),
+     body:const  NewsScreen(),
   bottomNavigationBar: BottomNavigationBar(
     currentIndex: 0,
      onTap:(index) {
       switch(index){
      case 0:
-     Get.offAll(()=>  HomeScreen());
+     Get.offAll(()=>  const HomeScreen());
      break;
      case 1:
       Get.toNamed('search');
       break;
       case 2:
-      Get.to(()=>  ProfilePage());
+      Get.to(()=>  const ProfilePage());
       break;
      }
      },

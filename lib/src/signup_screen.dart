@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/routes.dart';
 class SignupScreen extends StatelessWidget {
-   //const SignupScreen({Key? key}) : super(key: key);
+   const SignupScreen({super.key});
   @override
    Widget build(BuildContext context){
     return Scaffold(
@@ -89,13 +89,13 @@ class SignupScreen extends StatelessWidget {
           onPressed: (){
           Get.toNamed(home);
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+        ),
         child:const Text('Sign Up',
         style: TextStyle(
           color: Colors.white,
         ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
         ),
         ),
        
