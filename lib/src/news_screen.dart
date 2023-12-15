@@ -41,8 +41,25 @@ Widget build(BuildContext context) {
       itemBuilder: (context, index) {
         final newsItem= newsData[index];
         return ListTile(
-          title: Text(newsItem['title']),
-          subtitle: Text(newsItem['description']),
+          title: Text(newsItem['title']??''),
+          subtitle: Column(
+            children: [
+              Text(newsItem['description']??''),
+            const  SizedBox(height: 8.0),
+            if ( newsItem['ImageUrl']!=null )
+              Image.network(
+                newsItem['ImageUrl'],
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+             const SizedBox(height: 8.0),
+              Text(
+                newsItem['content'] ??'',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
           
           //Add other widget to display more details if needed 
         );

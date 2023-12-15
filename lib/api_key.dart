@@ -1,1 +1,1 @@
-const String newsApiKey='pub_3475045f866b4cc20aa7cbabd3788736f5bc5';
+const String newsApiKey='06d5928e7e9c42939b110b9ab671e75a';

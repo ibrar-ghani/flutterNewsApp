@@ -42,8 +42,25 @@ class SearchPageState extends State<SearchPage> {
               itemBuilder: (context, index) {
                 final result=searchResults[index];
                 return ListTile(
-                  title: Text(result['title']),
-                  subtitle: Text(result['description']),
+                  title: Text(result['title'] ??''),
+                  subtitle: Column(
+                    children: [
+                      Text(result['description'] ??''),
+                      const  SizedBox(height: 8.0),
+                      if(result['ImageUrl']!=null)
+                      Image.network(
+                        result['ImageUrl'],
+                       width: double.infinity,
+                        fit: BoxFit.cover,
+                       ),
+                     const SizedBox(height: 8.0),
+                     Text(
+                      result['content'] ??'',
+                      maxLines: 3,
+                     overflow: TextOverflow.ellipsis,
+                        ),
+                    ],
+                  ),
                   // Add additional details or actions as needed
                 );
               },
@@ -56,7 +73,7 @@ class SearchPageState extends State<SearchPage> {
 
  // Function to update search results based on the query using an API
   Future<void> updateSearchResults(String query) async {
-    // Replace 'your_api_key_here' with your actual API key
+    //your API key
     final response = await http.get(
       Uri.parse('https://newsapi.org/v2/everything?q=bitcoin&apiKey=06d5928e7e9c42939b110b9ab671e75a'),
     );
