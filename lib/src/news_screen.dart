@@ -55,7 +55,7 @@ Widget build(BuildContext context) {
              const SizedBox(height: 8.0),
               Text(
                 newsItem['content'] ??'',
-                maxLines: 3,
+                maxLines: 5,
                 overflow: TextOverflow.ellipsis,
               ),
             ],

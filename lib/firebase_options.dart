@@ -44,12 +44,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBHj0LYCNPNnv2oTv6sb-j8SGR3LbiIJB4',
-    appId: '1:961617701989:web:76ca4931c37aa3f4b26a8c',
-    messagingSenderId: '961617701989',
-    projectId: 'news-app-b18b9',
-    authDomain: 'news-app-b18b9.firebaseapp.com',
-    storageBucket: 'news-app-b18b9.appspot.com',
+   apiKey: "AIzaSyBHj0LYCNPNnv2oTv6sb-j8SGR3LbiIJB4",
+  authDomain: "news-app-b18b9.firebaseapp.com",
+  databaseURL: "https://news-app-b18b9.firebaseio.com",
+  projectId: "news-app-b18b9",
+  storageBucket: "news-app-b18b9.appspot.com",
+  messagingSenderId: "961617701989",
+  appId: "1:961617701989:web:76ca4931c37aa3f4b26a8c"
   );
 
   static const FirebaseOptions android = FirebaseOptions(

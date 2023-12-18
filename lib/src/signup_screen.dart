@@ -111,25 +111,30 @@ class SignupScreenState extends State<SignupScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
+                  _logger.e('Before User Creation');
                   if (passwordController.text.trim() == confirmPasswordController.text.trim()) {
                     // Create a user using Firebase Authentication
                     final userCredential = await _auth.createUserWithEmailAndPassword(
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     );
-
+                  _logger.e('After User Creation');
                     // Store user data in Firebase Realtime Database
                     await storeUserData(userCredential.user!.uid, emailController.text.trim(), passwordController.text.trim());
-
+                    _logger.e('After Storing User Data.');
+                    emailController.clear();
+                    passwordController.clear();
+                    confirmPasswordController.clear();
                     // Navigate to the home screen after successful signup
-                    Get.toNamed(home);
+                    Get.offAll('login');
+                    showSnackbar('Signup successful!', Colors.green);
                   } else {
                     _logger.e('Passwords do not match');
                   }
                 } catch (e) {
+                  showSnackbar('Signup failed. $e', Colors.red);
                   _logger.e('Error: $e');
-                  // Handle signup failure
-                  // For example, you might want to show an error message to the user.
+                
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -159,6 +164,17 @@ class SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
+  void showSnackbar(String message, Color color) {
+  Get.snackbar(
+    'Signup Status',
+    message,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: color,
+    colorText: Colors.white,
+    duration: const Duration(seconds: 3),
+  );
+}
+
 
   Future<void> storeUserData(String userId, String email, String password) async {
     try {

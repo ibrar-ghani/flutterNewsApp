@@ -11,16 +11,19 @@ import 'package:routingexample/src/about_us.dart';
 import 'package:routingexample/src/contact_us.dart';
 import 'package:routingexample/src/help.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:routingexample/firebase_options.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options:const FirebaseOptions(
-      apiKey: '06d5928e7e9c42939b110b9ab671e75a', 
-      appId: '1:961617701989:web:76ca4931c37aa3f4b26a8c', 
-      messagingSenderId: '961617701989', 
-      projectId: 'news-app-b18b9',
-      ),
+    options: DefaultFirebaseOptions.currentPlatform,
+  //  options:const FirebaseOptions(
+   // apiKey: 'AIzaSyBHj0LYCNPNnv2oTv6sb-j8SGR3LbiIJB4',
+   // appId: '1:961617701989:web:76ca4931c37aa3f4b26a8c',
+   // messagingSenderId: '961617701989',
+   // projectId: 'news-app-b18b9',
+   // authDomain: 'news-app-b18b9.firebaseapp.com',
+   // storageBucket: 'news-app-b18b9.appspot.com',
+ // ),
   );
   runApp(const MyApp());
 }

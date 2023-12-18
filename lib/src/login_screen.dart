@@ -81,9 +81,13 @@ Widget build(BuildContext context){
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           );
+          emailController.clear();
+          passwordController.clear();
+          showSnackbar('Login successful!', Colors.green);
         Get.toNamed(home);
          }
            catch (e) {
+          showSnackbar('Login failed. $e', Colors.red);
              _logger.e('Error: $e');
          } 
           },
@@ -111,5 +115,15 @@ Widget build(BuildContext context){
     ),
   ),
  );
+}
+          void showSnackbar(String message, Color color) {
+  Get.snackbar(
+    'LogIn Status',
+    message,
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: color,
+    colorText: Colors.white,
+    duration: const Duration(seconds: 3),
+  );
 }
 }
