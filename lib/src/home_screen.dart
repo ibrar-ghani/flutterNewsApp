@@ -44,7 +44,7 @@ Widget build (BuildContext context){
       Get.toNamed('search');
       break;
       case 2:
-      Get.to(()=>  const ProfilePage());
+      Get.to(()=>   ProfilePage());
       break;
      }
      },

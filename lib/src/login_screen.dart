@@ -61,6 +61,7 @@ Widget build(BuildContext context){
         child:   Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextField(
+          obscureText: true,
           controller: passwordController,
           decoration:const InputDecoration(
             labelText: 'Password',

@@ -4,9 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:routingexample/routes.dart';
 import 'package:logger/logger.dart';
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+import 'package:routingexample/src/home_screen.dart';
+import 'package:routingexample/src/profilecontroller.dart';
 
+class SignupScreen extends StatefulWidget {
+   SignupScreen({super.key});
+   final TextEditingController emailController = TextEditingController();
   @override
   SignupScreenState createState() => SignupScreenState();
 }
@@ -118,15 +121,17 @@ class SignupScreenState extends State<SignupScreen> {
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     );
+                    ProfileController profileController = Get.put(ProfileController());
+                    profileController.setEmail(emailController.text.trim());
                   _logger.e('After User Creation');
                     // Store user data in Firebase Realtime Database
-                    await storeUserData(userCredential.user!.uid, emailController.text.trim(), passwordController.text.trim());
+                    // await storeUserData(userCredential.user!.uid, emailController.text.trim(), passwordController.text.trim());
                     _logger.e('After Storing User Data.');
                     emailController.clear();
                     passwordController.clear();
                     confirmPasswordController.clear();
                     // Navigate to the home screen after successful signup
-                    Get.offAll('login');
+                    Get.to(const HomeScreen());
                     showSnackbar('Signup successful!', Colors.green);
                   } else {
                     _logger.e('Passwords do not match');
@@ -179,11 +184,12 @@ class SignupScreenState extends State<SignupScreen> {
   Future<void> storeUserData(String userId, String email, String password) async {
     try {
       // Store user data under 'users' in the Realtime Database
-      await _databaseReference.ref.child('users').child(userId).set({
+       await _databaseReference.ref.child('users').child(userId).set({
         'email': email,
         'password': password,
         // Add more fields as needed
       });
+    
     } catch (e) {
       _logger.e('Error storing user data: $e');
     }
