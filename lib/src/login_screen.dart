@@ -16,13 +16,15 @@ class LoginScreenState extends State<LoginScreen>{
 @override
 Widget build(BuildContext context){
  return Scaffold(
-  backgroundColor: Colors.indigo,
-  appBar: AppBar(title:const Text('Log In',
+  backgroundColor: Colors.white,
+  appBar: AppBar(
+    automaticallyImplyLeading: false,
+    title:const Text('Log In',
   style: TextStyle(
-    color: Colors.blueAccent,
+    color: Colors.white,
   ),
   ),
-  backgroundColor: Colors.black,
+  backgroundColor: Colors.blueAccent,
   ),
   body: Center(
     child: Column(
@@ -32,7 +34,7 @@ Widget build(BuildContext context){
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
+            border: Border.all(color: Colors.blueAccent),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child:   Padding(
@@ -41,9 +43,9 @@ Widget build(BuildContext context){
           controller: emailController,
           decoration:const InputDecoration(
             labelText: 'Username',
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(color: Colors.black),
             hintText: 'Enter your Email',
-            hintStyle: TextStyle(color: Colors.white),
+            hintStyle: TextStyle(color: Colors.blueAccent),
             border: InputBorder.none,
           ),
          ),
@@ -55,7 +57,7 @@ Widget build(BuildContext context){
         alignment: Alignment.topCenter,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
+            border: Border.all(color: Colors.blueAccent),
             borderRadius: BorderRadius.circular(8.0),
           ),
         child:   Padding(
@@ -65,9 +67,9 @@ Widget build(BuildContext context){
           controller: passwordController,
           decoration:const InputDecoration(
             labelText: 'Password',
-            labelStyle:TextStyle( color: Colors.white),
+            labelStyle:TextStyle( color: Colors.black),
             hintText: 'Enter your Password',
-             hintStyle: TextStyle(color: Colors.white),
+             hintStyle: TextStyle(color: Colors.blueAccent),
             border: InputBorder.none,
           ),
          ),
@@ -84,8 +86,8 @@ Widget build(BuildContext context){
           );
           emailController.clear();
           passwordController.clear();
-          showSnackbar('Login successful!', Colors.green);
-        Get.toNamed(home);
+          showSnackbar('Login successful!', Colors.greenAccent);
+          Get.offAllNamed('home');
          }
            catch (e) {
           showSnackbar('Login failed. $e', Colors.red);
@@ -93,7 +95,7 @@ Widget build(BuildContext context){
          } 
           },
          style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.blueAccent,
         ),
         child:const Text("LogIn",
         style: TextStyle(

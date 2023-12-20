@@ -7,6 +7,8 @@ class AboutUsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:const Text('About Us'),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blueAccent,
       ),
       body:const Center(
         child: Text('Include All the Details about the news App'),

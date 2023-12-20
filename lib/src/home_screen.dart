@@ -7,7 +7,13 @@ class HomeScreen extends StatelessWidget{
 @override
 Widget build (BuildContext context){
   return Scaffold(
-    appBar: AppBar(title:const Text('Home'),
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
+      title:const Text('Home',
+      style: TextStyle(
+        color: Colors.white,
+      ),
+      ),
     actions: [
       PopupMenuButton(
         itemBuilder: (BuildContext context) =>[
@@ -23,6 +29,10 @@ Widget build (BuildContext context){
             value:'help',
             child: Text('Help'),
             ),
+            const PopupMenuItem <String>(
+              value: 'logout',
+              child: Text('LogOut'),
+            ),
         ],
         onSelected: (value) {
           //Handle menu item using getx
@@ -31,8 +41,9 @@ Widget build (BuildContext context){
         
         )
     ],
+    backgroundColor: Colors.blueAccent,
     ),
-     body:const  NewsScreen(),
+     body:  NewsScreen(),
   bottomNavigationBar: BottomNavigationBar(
     currentIndex: 0,
      onTap:(index) {

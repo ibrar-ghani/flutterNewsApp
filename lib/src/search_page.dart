@@ -1,21 +1,21 @@
-import 'dart:convert';
-
+// search_page.dart
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
-  @override
-  SearchPageState createState() => SearchPageState();
-}
+import 'package:get/get.dart';
+import 'package:routingexample/src/news_controller.dart';
+import 'package:routingexample/src/news_model.dart';
 
-class SearchPageState extends State<SearchPage> {
-  List<Map<String,dynamic>> searchResults = [];
-  
+class SearchPage extends StatelessWidget {
+  SearchPage({super.key});
+  final NewsController newsController = Get.put(NewsController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text('Search Page'),
+        title: const Text('Search Page',
+        ),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Column(
         children: [
@@ -23,13 +23,16 @@ class SearchPageState extends State<SearchPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onChanged: (query) {
-                // Call a function to update search results based on the query
-                updateSearchResults(query);
+                if (query.isNotEmpty) {
+                  newsController.fetchData(query: query);
+                } else {
+                  newsController.clearData();
+                }
               },
               decoration: InputDecoration(
                 labelText: 'Search',
                 hintText: 'Enter your search query',
-                prefixIcon:const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -37,32 +40,20 @@ class SearchPageState extends State<SearchPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                final result=searchResults[index];
-                return ListTile(
-                  title: Text(result['title'] ??''),
-                  subtitle: Column(
-                    children: [
-                      Text(result['description'] ??''),
-                      const  SizedBox(height: 8.0),
-                      if(result['ImageUrl']!=null)
-                      Image.network(
-                        result['ImageUrl'],
-                       width: double.infinity,
-                        fit: BoxFit.cover,
-                       ),
-                     const SizedBox(height: 8.0),
-                     Text(
-                      result['content'] ??'',
-                      maxLines: 3,
-                     overflow: TextOverflow.ellipsis,
-                        ),
-                    ],
-                  ),
-                  // Add additional details or actions as needed
-                );
+            child: Obx(
+              () {
+                final searchResults = newsController.newsData;
+                return searchResults.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: searchResults.length,
+                        itemBuilder: (context, index) {
+                          final result = searchResults[index];
+                          return ArticleCard(article: result);
+                        },
+                      )
+                    : const Center(
+                        child: Text('No results to display'),
+                      );
               },
             ),
           ),
@@ -70,26 +61,35 @@ class SearchPageState extends State<SearchPage> {
       ),
     );
   }
+}
 
- // Function to update search results based on the query using an API
-  Future<void> updateSearchResults(String query) async {
-    //your API key
-    final response = await http.get(
-      Uri.parse('https://newsapi.org/v2/everything?q=bitcoin&apiKey=06d5928e7e9c42939b110b9ab671e75a'),
+class ArticleCard extends StatelessWidget {
+  final ArticleModel article;
+  const ArticleCard({required this.article});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(article.title ?? ''),
+      subtitle: Column(
+        children: [
+          Text(article.description ?? ''),
+          const SizedBox(height: 8.0),
+          if (article.urlToImage != null)
+            Image.network(
+              article.urlToImage!,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          const SizedBox(height: 8.0),
+          Text(
+            article.content ?? '',
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+      // Add additional details or actions as needed
     );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      if (responseData['status'] == 'ok') {
-        final List<dynamic> articles = responseData['articles'];
-        setState(() {
-          searchResults = articles.cast<Map<String, dynamic>>();
-        });
-      } else {
-        throw Exception('API returned an error: ${responseData['message']}');
-      }
-    } else {
-      throw Exception('Failed to load data');
-    }
   }
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:routingexample/routes.dart';
 import 'package:logger/logger.dart';
-import 'package:routingexample/src/home_screen.dart';
-import 'package:routingexample/src/profilecontroller.dart';
+import 'package:routingexample/src/profile_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
    SignupScreen({super.key});
@@ -16,25 +15,49 @@ class SignupScreen extends StatefulWidget {
 
 class SignupScreenState extends State<SignupScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
   final Logger _logger= Logger();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  Future<void> storeUserData(String userId, String email, String password, String name, String phoneNumber, String address) async {
+    try {
+      // Access Cloud Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Store user data in Cloud Firestore under 'users' collection
+      await firestore.collection('users').doc(userId).set({
+        'email': email,
+        'password': password,
+        'name': name,
+        'phoneNumber': phoneNumber,
+        'address': address,
+        // Add more fields as needed
+      });
+
+      _logger.e('User data stored successfully.');
+    } catch (e) {
+      _logger.e('Error storing user data: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          "Sign Up",
+        automaticallyImplyLeading: false,
+        title: const Text("Sign Up",
           style: TextStyle(
-            color: Colors.blue,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Center(
         child: Column(
@@ -44,7 +67,53 @@ class SignupScreenState extends State<SignupScreen> {
               alignment: Alignment.topCenter,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
+                  border: Border.all(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      labelStyle: TextStyle(color: Colors.black),
+                      hintText: 'Enter your name',
+                      hintStyle: TextStyle(color: Colors.blueAccent),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 3),
+                Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: phoneNumberController,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone',
+                      labelStyle: TextStyle(color: Colors.black),
+                      hintText: 'Enter your Phone number',
+                      hintStyle: TextStyle(color: Colors.blueAccent),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 3),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
@@ -53,21 +122,21 @@ class SignupScreenState extends State<SignupScreen> {
                     controller: emailController,
                     decoration: const InputDecoration(
                       labelText: 'Email',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.black),
                       hintText: 'Enter your email',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.blueAccent),
                       border: InputBorder.none,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 3),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
+                  border: Border.all(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
@@ -77,21 +146,21 @@ class SignupScreenState extends State<SignupScreen> {
                     obscureText: true,
                     decoration: const InputDecoration(
                       labelText: 'Password',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.black),
                       hintText: 'Enter your password',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.blueAccent),
                       border: InputBorder.none,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 3),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
+                  border: Border.all(color: Colors.blueAccent),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
@@ -101,37 +170,71 @@ class SignupScreenState extends State<SignupScreen> {
                     obscureText: true,
                     decoration: const InputDecoration(
                       labelText: 'Confirm Password',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.black),
                       hintText: 'Confirm your password',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.blueAccent),
                       border: InputBorder.none,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 3),
+                Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: addressController,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                      labelStyle: TextStyle(color: Colors.black),
+                      hintText: 'Enter your current address',
+                      hintStyle: TextStyle(color: Colors.blueAccent),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+             const SizedBox(height: 5),
             ElevatedButton(
               onPressed: () async {
                 try {
                   _logger.e('Before User Creation');
                   if (passwordController.text.trim() == confirmPasswordController.text.trim()) {
                     // Create a user using Firebase Authentication
-                    final userCredential = await _auth.createUserWithEmailAndPassword(
+                  UserCredential userCredential=  await _auth.createUserWithEmailAndPassword(
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     );
+                    //Store Addational user data
+                    await storeUserData(
+                       userCredential.user!.uid,
+                       emailController.text.trim(),
+                      passwordController.text.trim(),
+                       nameController.text.trim(),
+                      phoneNumberController.text.trim(),
+                     addressController.text.trim(),
+                    );
                     ProfileController profileController = Get.put(ProfileController());
                     profileController.setEmail(emailController.text.trim());
-                  _logger.e('After User Creation');
-                    // Store user data in Firebase Realtime Database
-                    // await storeUserData(userCredential.user!.uid, emailController.text.trim(), passwordController.text.trim());
-                    _logger.e('After Storing User Data.');
+                    profileController.setName(nameController.text.trim());
+                    profileController.setPhoneNumber(phoneNumberController.text.trim());
+                    profileController.setAddress(addressController.text.trim());
                     emailController.clear();
                     passwordController.clear();
                     confirmPasswordController.clear();
+                    nameController.clear();
+                    phoneNumberController.clear();
+                    addressController.clear();
                     // Navigate to the home screen after successful signup
-                    Get.to(const HomeScreen());
+                    Get.offAllNamed('home');
                     showSnackbar('Signup successful!', Colors.green);
                   } else {
                     _logger.e('Passwords do not match');
@@ -143,7 +246,7 @@ class SignupScreenState extends State<SignupScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blueAccent,
               ),
               child: const Text(
                 'Sign Up',
@@ -152,7 +255,7 @@ class SignupScreenState extends State<SignupScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             TextButton(
               onPressed: () {
                 Get.toNamed(login);
@@ -179,19 +282,4 @@ class SignupScreenState extends State<SignupScreen> {
     duration: const Duration(seconds: 3),
   );
 }
-
-
-  Future<void> storeUserData(String userId, String email, String password) async {
-    try {
-      // Store user data under 'users' in the Realtime Database
-       await _databaseReference.ref.child('users').child(userId).set({
-        'email': email,
-        'password': password,
-        // Add more fields as needed
-      });
-    
-    } catch (e) {
-      _logger.e('Error storing user data: $e');
-    }
-  }
 }
