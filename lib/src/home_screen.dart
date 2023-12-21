@@ -9,29 +9,39 @@ Widget build (BuildContext context){
   return Scaffold(
     appBar: AppBar(
       automaticallyImplyLeading: false,
+
       title:const Text('Home',
       style: TextStyle(
         color: Colors.white,
       ),
       ),
+      iconTheme: const IconThemeData(color: Colors.white),
     actions: [
       PopupMenuButton(
         itemBuilder: (BuildContext context) =>[
         const  PopupMenuItem <String>(
             value:'aboutUs',
-            child: Text('About Us'),
+            child: Text('About Us',
+            style: TextStyle(color: Colors.blueAccent),
+            ),
             ),
             const  PopupMenuItem <String>(
             value:'contactUs',
-            child: Text('Contact Us'),
+            child: Text('Contact Us',
+            style: TextStyle(color: Colors.blueAccent),
+            ),
             ),
             const  PopupMenuItem <String>(
             value:'help',
-            child: Text('Help'),
+            child: Text('Help',
+            style: TextStyle(color: Colors.blueAccent),
+            ),
             ),
             const PopupMenuItem <String>(
-              value: 'logout',
-              child: Text('LogOut'),
+              value: 'login',
+              child: Text('LogOut',
+              style: TextStyle(color: Colors.red),
+              ),
             ),
         ],
         onSelected: (value) {
@@ -61,15 +71,15 @@ Widget build (BuildContext context){
      },
     items: const [
       BottomNavigationBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(Icons.home,color: Colors.blueAccent),
         label: 'Home',
         ),
         BottomNavigationBarItem(
-        icon: Icon(Icons.search),
+        icon: Icon(Icons.search,color: Colors.blueAccent),
         label: 'Search',
         ),
         BottomNavigationBarItem(
-        icon: Icon(Icons.person),
+        icon: Icon(Icons.person,color: Colors.blueAccent),
         label: 'Profile',
         ),
     ],
