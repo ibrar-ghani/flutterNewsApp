@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:routingexample/routes.dart';
 import 'package:routingexample/src/news_screen.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/src/profile_page.dart';
+import 'package:routingexample/src/news_controller.dart';
+
 class HomeScreen extends StatelessWidget{
-   const HomeScreen({super.key});
+    HomeScreen({super.key});
+    final NewsController newsController = Get.put(NewsController());
+
 @override
 Widget build (BuildContext context){
   return Scaffold(
@@ -46,7 +51,11 @@ Widget build (BuildContext context){
         ],
         onSelected: (value) {
           //Handle menu item using getx
+          if(value==login){
+            Get.offAllNamed('/login');
+          }else{
           Get.toNamed('/$value');
+          }
         },
         
         )
@@ -59,7 +68,7 @@ Widget build (BuildContext context){
      onTap:(index) {
       switch(index){
      case 0:
-     Get.offAll(()=>  const HomeScreen());
+     Get.offAll(()=>   HomeScreen());
      break;
      case 1:
       Get.toNamed('search');

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:routingexample/routes.dart';
 import 'package:logger/logger.dart';
-import 'package:routingexample/src/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -221,12 +220,7 @@ class SignupScreenState extends State<SignupScreen> {
                        nameController.text.trim(),
                       phoneNumberController.text.trim(),
                      addressController.text.trim(),
-                    );
-                    ProfileController profileController = Get.put(ProfileController());
-                    profileController.setEmail(emailController.text.trim());
-                    profileController.setName(nameController.text.trim());
-                    profileController.setPhoneNumber(phoneNumberController.text.trim());
-                    profileController.setAddress(addressController.text.trim());
+                    );                   
                     emailController.clear();
                     passwordController.clear();
                     confirmPasswordController.clear();
