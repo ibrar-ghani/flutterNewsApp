@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
 class HelpScreen extends StatelessWidget {
-   //const HelpScreen({Key? key}) : super(key: key);
+   const HelpScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title:const Text('Help',
-        style: TextStyle(
-          color: Colors.blue,
+        title:const Text('Help',      
         ),
-        ),
-        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      backgroundColor: Colors.blueAccent,
       ),
       body:const Center(
         child: Text('1. How do I navigate through the app?'

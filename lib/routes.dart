@@ -8,3 +8,4 @@ const String profile='/profile';
 const String about='/aboutUs';
 const String contact='/contactUs';
 const String help='/help';
+const String logout='/login';

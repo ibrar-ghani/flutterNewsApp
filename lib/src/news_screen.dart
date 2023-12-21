@@ -1,23 +1,41 @@
 import 'package:flutter/material.dart';
-class NewsScreen extends StatelessWidget{
-//const NewsScreen({super.key});
+import 'package:routingexample/src/news_controller.dart';
+import 'package:get/get.dart';
 
-@override
+ class NewsScreen extends StatelessWidget
+ {
+          NewsScreen({super.key});
+  final NewsController newsController = Get.put(NewsController());
+    @override
 Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 5, // Adjust the number of cards as needed
-      itemBuilder: (context, index) {
-        return Card(
-          margin: const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: Text('News Title $index'),
-            subtitle: Text('News Content $index'),
-            onTap: () {
-              // Handle card tap if needed
-            },
-          ),
-        );
-      },
+   return Obx(
+      () => ListView.builder(
+        itemCount: newsController.newsData.length,
+        itemBuilder: (context, index) {
+          final newsItem = newsController.newsData[index];
+          return ListTile(
+            title: Text(newsItem.title ?? ''),
+            subtitle: Column(
+              children: [
+                Text(newsItem.description ?? ''),
+                const SizedBox(height: 8.0),
+                if (newsItem.urlToImage != null && newsItem.urlToImage!.isNotEmpty)
+                  Image.network(
+                    newsItem.urlToImage!,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                const SizedBox(height: 8.0),
+                Text(
+                  newsItem.content ?? '',
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
