@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:routingexample/src/profile_controller.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class ProfilePage extends StatelessWidget{
-   //const ProfilePage({super.key});
-   
+class ProfilePage extends StatelessWidget {
+  ProfilePage({super.key});
+
+  final ProfileController profileController = Get.put(ProfileController());
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Update the profile picture with the selected image
+      profileController.setProfilePicture(File(pickedFile.path));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -15,45 +31,24 @@ class ProfilePage extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             //profile picture
-          const  CircleAvatar(
-              radius: 50.0,
-              backgroundImage: AssetImage('asset/profile.jpg'),
+            GestureDetector(
+              onTap: _pickImage,
+              child: CircleAvatar(
+                radius: 50.0,
+                backgroundImage: profileController.profilePicture.value?.path != null
+                    ? FileImage(profileController.profilePicture.value!) as ImageProvider<Object>?
+                    : const AssetImage('assets/human-icon-png-1901.png'),
+              ),
             ),
-           const SizedBox(height: 16.0),
-            //Username
-          const  Text(
-              'XYZ@123',
-              style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-            ),
-           const  SizedBox(height: 8.0),
-            //Name
-         const   Text(
-              'ABCDEFG',
-              style: TextStyle(fontSize: 16),
-            ),
-          const  SizedBox(height: 16),
-            _buildDetailRow('Email:','ABCXYZ@gmail.com'),
-            _buildDetailRow('location:','City, Country'),
-            _buildDetailRow('Join Date:','Jan 1, 2022'),
+            const SizedBox(height: 16),
+            Obx(() => Text('Email: ${profileController.email}')),
+            Obx(() => Text('Name: ${profileController.name}')),
+            Obx(() => Text('Phone Number: ${profileController.phoneNumber}')),
+            Obx(() => Text('Address: ${profileController.address}')),
           ],
         ),
-        ),
-    );
-  }
-  Widget _buildDetailRow (String label, String value)
-  {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          value,
-        style: const TextStyle(fontSize: 16),
-        ),
-      ],
+      ),
     );
   }
 }
+
