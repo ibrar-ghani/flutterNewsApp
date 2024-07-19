@@ -11,7 +11,7 @@ class NewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => newsController.newsData.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: newsController.newsData.length,
               itemBuilder: (context, index) {
@@ -38,7 +38,7 @@ class ArticleCard extends StatelessWidget {
           children: [
             Text(
               article.title ?? '',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             if (article.author != null) Text('Author: ${article.author!}'),
