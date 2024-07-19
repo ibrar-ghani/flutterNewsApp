@@ -1,98 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:routingexample/routes.dart';
-import 'package:routingexample/src/news_screen.dart';
 import 'package:get/get.dart';
+import 'package:routingexample/src/news_screen.dart';
 import 'package:routingexample/src/profile_page.dart';
 import 'package:routingexample/src/news_controller.dart';
 
-class HomeScreen extends StatelessWidget{
-    HomeScreen({super.key});
-    final NewsController newsController = Get.put(NewsController());
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+  final NewsController newsController = Get.put(NewsController());
 
-@override
-Widget build (BuildContext context){
-  return Scaffold(
-    appBar: AppBar(
-      automaticallyImplyLeading: false,
-
-      title:const Text('Home',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-      ),
-      iconTheme: const IconThemeData(color: Colors.white),
-    actions: [
-      PopupMenuButton(
-        itemBuilder: (BuildContext context) =>[
-        const  PopupMenuItem <String>(
-            value:'aboutUs',
-            child: Text('About Us',
-            style: TextStyle(color: Colors.blueAccent),
-            ),
-            ),
-            const  PopupMenuItem <String>(
-            value:'contactUs',
-            child: Text('Contact Us',
-            style: TextStyle(color: Colors.blueAccent),
-            ),
-            ),
-            const  PopupMenuItem <String>(
-            value:'help',
-            child: Text('Help',
-            style: TextStyle(color: Colors.blueAccent),
-            ),
-            ),
-            const PopupMenuItem <String>(
-              value: 'login',
-              child: Text('LogOut',
-              style: TextStyle(color: Colors.red),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Home',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem<String>(
+                value: 'aboutUs',
+                child: Text(
+                  'About Us',
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
               ),
-            ),
+              const PopupMenuItem<String>(
+                value: 'contactUs',
+                child: Text(
+                  'Contact Us',
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'help',
+                child: Text(
+                  'Help',
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'login',
+                child: Text(
+                  'LogOut',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 'login') {
+                Get.offAllNamed('/login');
+              } else {
+                Get.toNamed('/$value');
+              }
+            },
+          ),
         ],
-        onSelected: (value) {
-          //Handle menu item using getx
-          if(value==login){
-            Get.offAllNamed('/login');
-          }else{
-          Get.toNamed('/$value');
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: NewsScreen(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Get.offAll(() => HomeScreen());
+              break;
+            case 1:
+              Get.toNamed('search');
+              break;
+            case 2:
+              Get.to(() => ProfilePage());
+              break;
           }
         },
-        
-        )
-    ],
-    backgroundColor: Colors.blueAccent,
-    ),
-     body:  NewsScreen(),
-  bottomNavigationBar: BottomNavigationBar(
-    currentIndex: 0,
-     onTap:(index) {
-      switch(index){
-     case 0:
-     Get.offAll(()=>   HomeScreen());
-     break;
-     case 1:
-      Get.toNamed('search');
-      break;
-      case 2:
-      Get.to(()=>   ProfilePage());
-      break;
-     }
-     },
-    items: const [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home,color: Colors.blueAccent),
-        label: 'Home',
-        ),
-        BottomNavigationBarItem(
-        icon: Icon(Icons.search,color: Colors.blueAccent),
-        label: 'Search',
-        ),
-        BottomNavigationBarItem(
-        icon: Icon(Icons.person,color: Colors.blueAccent),
-        label: 'Profile',
-        ),
-    ],
-    ),
-  );
-}
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.blueAccent),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search, color: Colors.blueAccent),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, color: Colors.blueAccent),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
 }

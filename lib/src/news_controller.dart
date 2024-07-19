@@ -1,4 +1,3 @@
-// news_controller.dart
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -9,15 +8,22 @@ class NewsController extends GetxController {
   var newsData = <ArticleModel>[].obs;
   final Logger _logger = Logger();
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchData();
+  }
+
   void clearData() {
     newsData.clear();
   }
 
-  Future<void> fetchData({String query = ''}) async {
+  Future<void> fetchData({String query = 'technology'}) async {
     try {
-      final response = await http.get(
-        Uri.parse('https://newsapi.org/v2/everything?q=$query&apiKey=06d5928e7e9c42939b110b9ab671e75a'),
-      );
+      final uri = Uri.parse('https://newsapi.org/v2/everything?q=$query&apiKey=06d5928e7e9c42939b110b9ab671e75a');
+      _logger.i('Fetching data from: $uri');
+
+      final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
