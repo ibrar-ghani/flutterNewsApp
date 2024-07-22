@@ -52,6 +52,14 @@ class ArticleCard extends StatelessWidget {
                 article.urlToImage!,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const SizedBox(
+                    height: 200,
+                    child: Center(
+                      child: Text('Image not available'),
+                    ),
+                  );
+                },
               ),
             const SizedBox(height: 10),
             Text(
