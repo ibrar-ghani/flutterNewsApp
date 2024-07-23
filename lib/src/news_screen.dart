@@ -33,26 +33,19 @@ class ArticleCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         final url = article.url ?? 'https://flutter.dev';
-        print('Attempting to launch URL: $url');
         try {
+          // ignore: deprecated_member_use
           final canLaunchUrl = await canLaunch(url);
-          print('canLaunch result: $canLaunchUrl');
           if (canLaunchUrl) {
-            print('Launching URL: $url');
-            final launched = await launch(url);
-            print('Launch result: $launched');
           } else {
-            print('Could not launch $url, trying alternative method');
             final launched = await launch(url);
-            print('Alternative launch result: $launched');
             if (!launched) {
-              ScaffoldMessenger.of(context).showSnackBar(
+              ScaffoldMessenger.of( context).showSnackBar(
                 SnackBar(content: Text('Could not launch $url')),
               );
             }
           }
         } catch (e) {
-          print('Error launching URL: $e');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error launching URL: $e')),
           );
