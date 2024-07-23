@@ -1,6 +1,7 @@
 // app_routes.dart
 
 const String login = '/login';
+const String splashscreen = '/splashscreen';
 const String signup = '/signup';
 const String home = '/home';
 const String search='/search';

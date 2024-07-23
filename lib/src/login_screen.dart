@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
+import 'package:routingexample/src/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,9 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Logger _logger = Logger();
-
+  final AuthService _authService = AuthService();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -83,9 +80,9 @@ class LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      await _auth.signInWithEmailAndPassword(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
+                      await _authService.signIn(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
                       );
                       emailController.clear();
                       passwordController.clear();
@@ -93,7 +90,6 @@ class LoginScreenState extends State<LoginScreen> {
                       Get.offAllNamed('home');
                     } catch (e) {
                       showSnackbar('Login failed. $e', Colors.red);
-                      _logger.e('Error: $e');
                     }
                   },
                   style: ElevatedButton.styleFrom(

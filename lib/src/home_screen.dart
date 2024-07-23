@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:routingexample/src/news_screen.dart';
 import 'package:routingexample/src/profile_page.dart';
 import 'package:routingexample/src/news_controller.dart';
+import 'package:routingexample/src/services/auth_service.dart'; // Import AuthService
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final NewsController newsController = Get.put(NewsController());
+  final AuthService _authService = AuthService(); // Create an instance of AuthService
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +54,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ],
-            onSelected: (value) {
+            onSelected: (value) async {
               if (value == 'login') {
+                await _authService.signOut(); // Sign out the user
                 Get.offAllNamed('/login');
               } else {
                 Get.toNamed('/$value');

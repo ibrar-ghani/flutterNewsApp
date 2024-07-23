@@ -1,8 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
+import 'package:routingexample/src/services/auth_service.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
@@ -13,8 +12,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class SignupScreenState extends State<SignupScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Logger _logger = Logger();
+  final AuthService _authService = AuthService();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -22,27 +20,6 @@ class SignupScreenState extends State<SignupScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-
-  Future<void> storeUserData(String userId, String email, String password, String name, String phoneNumber, String address) async {
-    try {
-      // Access Cloud Firestore instance
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      // Store user data in Cloud Firestore under 'users' collection
-      await firestore.collection('users').doc(userId).set({
-        'email': email,
-        'password': password,
-        'name': name,
-        'phoneNumber': phoneNumber,
-        'address': address,
-        // Add more fields as needed
-      });
-
-      _logger.i('User data stored successfully.');
-    } catch (e) {
-      _logger.e('Error storing user data: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,18 +185,14 @@ class SignupScreenState extends State<SignupScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      _logger.i('Before User Creation');
                       if (passwordController.text.trim() == confirmPasswordController.text.trim()) {
-                        // Create a user using Firebase Authentication
-                        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
-                        // Store additional user data
-                        await storeUserData(
-                          userCredential.user!.uid,
+                        User? user = await _authService.signUp(
                           emailController.text.trim(),
                           passwordController.text.trim(),
+                        );
+                        await _authService.storeUserData(
+                          user!.uid,
+                          emailController.text.trim(),
                           nameController.text.trim(),
                           phoneNumberController.text.trim(),
                           addressController.text.trim(),
@@ -230,16 +203,13 @@ class SignupScreenState extends State<SignupScreen> {
                         nameController.clear();
                         phoneNumberController.clear();
                         addressController.clear();
-                        // Navigate to the home screen after successful signup
                         Get.offAllNamed('home');
                         showSnackbar('Signup successful!', Colors.green);
                       } else {
-                        _logger.e('Passwords do not match');
                         showSnackbar('Passwords do not match', Colors.red);
                       }
                     } catch (e) {
                       showSnackbar('Signup failed. $e', Colors.red);
-                      _logger.e('Error: $e');
                     }
                   },
                   style: ElevatedButton.styleFrom(
