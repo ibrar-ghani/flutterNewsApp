@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:routingexample/src/services/auth_service.dart';
+import 'package:routingexample/src/controllers/login_controller.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
-}
-
-class LoginScreenState extends State<LoginScreen> {
-  final AuthService _authService = AuthService();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final LoginController controller = Get.put(LoginController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -44,7 +37,7 @@ class LoginScreenState extends State<LoginScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
-                      controller: emailController,
+                      controller: controller.emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Colors.black),
@@ -65,7 +58,7 @@ class LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       obscureText: true,
-                      controller: passwordController,
+                      controller: controller.passwordController,
                       decoration: const InputDecoration(
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Colors.black),
@@ -78,20 +71,7 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await _authService.signIn(
-                        emailController.text.trim(),
-                        passwordController.text.trim(),
-                      );
-                      emailController.clear();
-                      passwordController.clear();
-                      showSnackbar('Login successful!', Colors.green);
-                      Get.offAllNamed('home');
-                    } catch (e) {
-                      showSnackbar('Login failed. $e', Colors.red);
-                    }
-                  },
+                  onPressed: controller.login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
                   ),
@@ -120,17 +100,6 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  void showSnackbar(String message, Color color) {
-    Get.snackbar(
-      'LogIn Status',
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: color,
-      colorText: Colors.white,
-      duration: const Duration(seconds: 3),
     );
   }
 }

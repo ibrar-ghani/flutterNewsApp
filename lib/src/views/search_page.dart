@@ -1,8 +1,8 @@
 // search_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:routingexample/src/news_controller.dart';
-import 'package:routingexample/src/news_model.dart';
+import 'package:routingexample/src/controllers/news_controller.dart';
+import 'package:routingexample/src/models/news_model.dart';
 
 class SearchPage extends StatelessWidget {
   SearchPage({super.key});

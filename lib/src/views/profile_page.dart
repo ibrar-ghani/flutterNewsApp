@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:routingexample/src/profile_controller.dart';
+import 'package:routingexample/src/controllers/profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';

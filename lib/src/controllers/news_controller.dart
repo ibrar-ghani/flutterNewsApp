@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:routingexample/src/news_model.dart';
+import 'package:routingexample/src/models/news_model.dart';
 import 'package:logger/logger.dart';
 
 class NewsController extends GetxController {

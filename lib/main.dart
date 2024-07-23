@@ -1,18 +1,18 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'routes.dart';
-import 'package:routingexample/src/splash_screen.dart';
-import 'package:routingexample/src/signup_screen.dart';
-import 'package:routingexample/src/login_screen.dart';
-import 'package:routingexample/src/home_screen.dart';
-import 'package:routingexample/src/profile_page.dart';
-import 'package:routingexample/src/Search_Page.dart';
-import 'package:routingexample/src/about_us.dart';
-import 'package:routingexample/src/contact_us.dart';
-import 'package:routingexample/src/help.dart';
+import 'src/services/routes.dart';
+import 'package:routingexample/src/views/splash_screen.dart';
+import 'package:routingexample/src/views/signup_screen.dart';
+import 'package:routingexample/src/views/login_screen.dart';
+import 'package:routingexample/src/views/home_screen.dart';
+import 'package:routingexample/src/views/profile_page.dart';
+import 'package:routingexample/src/views/Search_Page.dart';
+import 'package:routingexample/src/views/about_us.dart';
+import 'package:routingexample/src/views/contact_us.dart';
+import 'package:routingexample/src/views/help.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:routingexample/firebase_options.dart';
+import 'package:routingexample/src/services/firebase_options.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

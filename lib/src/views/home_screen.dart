@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:routingexample/src/news_screen.dart';
-import 'package:routingexample/src/profile_page.dart';
-import 'package:routingexample/src/news_controller.dart';
+import 'package:routingexample/src/views/news_screen.dart';
+import 'package:routingexample/src/views/profile_page.dart';
+import 'package:routingexample/src/controllers/news_controller.dart';
 import 'package:routingexample/src/services/auth_service.dart'; // Import AuthService
 
 class HomeScreen extends StatelessWidget {
