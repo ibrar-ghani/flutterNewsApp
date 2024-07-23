@@ -1,28 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:routingexample/src/services/auth_service.dart';
+import 'package:routingexample/src/controllers/signup_controller.dart';
 
-class SignupScreen extends StatefulWidget {
-  SignupScreen({super.key});
-  final TextEditingController emailController = TextEditingController();
-
-  @override
-  SignupScreenState createState() => SignupScreenState();
-}
-
-class SignupScreenState extends State<SignupScreen> {
-  final AuthService _authService = AuthService();
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final SignupController controller = Get.put(SignupController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -52,7 +38,7 @@ class SignupScreenState extends State<SignupScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: nameController,
+                        controller: controller.nameController,
                         decoration: const InputDecoration(
                           labelText: 'Name',
                           labelStyle: TextStyle(color: Colors.black),
@@ -75,7 +61,7 @@ class SignupScreenState extends State<SignupScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: phoneNumberController,
+                        controller: controller.phoneNumberController,
                         decoration: const InputDecoration(
                           labelText: 'Phone',
                           labelStyle: TextStyle(color: Colors.black),
@@ -98,7 +84,7 @@ class SignupScreenState extends State<SignupScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: emailController,
+                        controller: controller.emailController,
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(color: Colors.black),
@@ -121,7 +107,7 @@ class SignupScreenState extends State<SignupScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: passwordController,
+                        controller: controller.passwordController,
                         obscureText: true,
                         decoration: const InputDecoration(
                           labelText: 'Password',
@@ -145,7 +131,7 @@ class SignupScreenState extends State<SignupScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: confirmPasswordController,
+                        controller: controller.confirmPasswordController,
                         obscureText: true,
                         decoration: const InputDecoration(
                           labelText: 'Confirm Password',
@@ -169,7 +155,7 @@ class SignupScreenState extends State<SignupScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: addressController,
+                        controller: controller.addressController,
                         decoration: const InputDecoration(
                           labelText: 'Address',
                           labelStyle: TextStyle(color: Colors.black),
@@ -183,35 +169,7 @@ class SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 5),
                 ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      if (passwordController.text.trim() == confirmPasswordController.text.trim()) {
-                        User? user = await _authService.signUp(
-                          emailController.text.trim(),
-                          passwordController.text.trim(),
-                        );
-                        await _authService.storeUserData(
-                          user!.uid,
-                          emailController.text.trim(),
-                          nameController.text.trim(),
-                          phoneNumberController.text.trim(),
-                          addressController.text.trim(),
-                        );
-                        emailController.clear();
-                        passwordController.clear();
-                        confirmPasswordController.clear();
-                        nameController.clear();
-                        phoneNumberController.clear();
-                        addressController.clear();
-                        Get.offAllNamed('home');
-                        showSnackbar('Signup successful!', Colors.green);
-                      } else {
-                        showSnackbar('Passwords do not match', Colors.red);
-                      }
-                    } catch (e) {
-                      showSnackbar('Signup failed. $e', Colors.red);
-                    }
-                  },
+                  onPressed: controller.signup,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
                   ),
@@ -239,17 +197,6 @@ class SignupScreenState extends State<SignupScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  void showSnackbar(String message, Color color) {
-    Get.snackbar(
-      'Signup Status',
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: color,
-      colorText: Colors.white,
-      duration: const Duration(seconds: 3),
     );
   }
 }
