@@ -13,8 +13,8 @@ class ProfilePage extends StatelessWidget {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      // Update the profile picture with the selected image
-      profileController.setProfilePicture(File(pickedFile.path));
+      // Upload the profile picture and update the profile picture URL
+      await profileController.uploadProfilePicture(File(pickedFile.path));
     }
   }
 
@@ -36,12 +36,14 @@ class ProfilePage extends StatelessWidget {
               // Profile picture
               GestureDetector(
                 onTap: _pickImage,
-                child: Obx(() => CircleAvatar(
-                  radius: 150.0,
-                  backgroundImage: profileController.profilePicture.value?.path != null
-                      ? FileImage(profileController.profilePicture.value!) as ImageProvider<Object>?
-                      : const AssetImage('assets/human-icon-png-1901.png'),
-                )),
+                child: Obx(() {
+                  return CircleAvatar(
+                    radius: 150.0,
+                    backgroundImage: profileController.profilePictureUrl.isNotEmpty
+                        ? NetworkImage(profileController.profilePictureUrl.value) as ImageProvider<Object>?
+                        : const AssetImage('assets/human-icon-png-1901.png'),
+                  );
+                }),
               ),
               const SizedBox(height: 16),
               Obx(() => Text('Email: ${profileController.email}')),

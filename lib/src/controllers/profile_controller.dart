@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logger/logger.dart';
 
 class ProfileController extends GetxController {
@@ -9,7 +10,7 @@ class ProfileController extends GetxController {
   RxString name = ''.obs;
   RxString phoneNumber = ''.obs;
   RxString address = ''.obs;
-  Rx<File?> profilePicture = Rx<File?>(null);
+  RxString profilePictureUrl = ''.obs;
   final Logger _logger = Logger();
 
   User? get user => FirebaseAuth.instance.currentUser;
@@ -37,19 +38,17 @@ class ProfileController extends GetxController {
     address.value = value;
   }
 
-  void setProfilePicture(File? file) {
-    profilePicture.value = file;
-  }
-
-  File? getProfilePicture() {
-    return profilePicture.value;
+  void setProfilePictureUrl(String url) {
+    profilePictureUrl.value = url;
   }
 
   Future<void> fetchUserData() async {
     try {
       if (user != null) {
-        _logger.i('User email: ${user!.email}');
+        _logger.i('Fetching user data for email: ${user!.email}');
         setEmail(user!.email ?? '');
+      } else {
+        _logger.e('User is not authenticated');
       }
     } catch (error) {
       _logger.e('Error fetching user data: $error');
@@ -66,14 +65,72 @@ class ProfileController extends GetxController {
                 .get();
 
         if (snapshot.exists) {
-          _logger.i('Additional user data: ${snapshot.data()}');
+          _logger.i('Fetched additional user data: ${snapshot.data()}');
           setName(snapshot.data()?['name'] ?? '');
           setPhoneNumber(snapshot.data()?['phoneNumber'] ?? '');
           setAddress(snapshot.data()?['address'] ?? '');
+          setProfilePictureUrl(snapshot.data()?['profilePictureUrl'] ?? '');
+          _logger.i('Profile picture URL: ${profilePictureUrl.value}');
+        } else {
+          _logger.e('No user document found in Firestore');
         }
+      } else {
+        _logger.e('User is not authenticated');
       }
     } catch (error) {
       _logger.e('Error fetching additional user data: $error');
     }
   }
+
+Future<void> uploadProfilePicture(File file) async {
+  try {
+    if (user != null) {
+      // Verify the file exists before attempting to upload
+      if (!await file.exists()) {
+        _logger.e('File does not exist at path: ${file.path}');
+        throw Exception('File does not exist');
+      }
+
+      // Reference to Firebase Storage
+      final storageRef = FirebaseStorage.instance.ref();
+      final profilePicRef = storageRef.child('profile_pictures/${user!.uid}.jpg');
+
+      _logger.i('Uploading file to: ${profilePicRef.fullPath}');
+
+      // Upload task
+      final uploadTask = profilePicRef.putFile(file);
+
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        _logger.i('Upload progress: ${snapshot.bytesTransferred}/${snapshot.totalBytes}');
+      });
+
+      final snapshot = await uploadTask.whenComplete(() {
+        _logger.i('Upload completed');
+      });
+
+      if (snapshot.state == TaskState.success) {
+        _logger.i('Upload successful');
+        final downloadUrl = await snapshot.ref.getDownloadURL();
+        _logger.i('Download URL: $downloadUrl');
+
+        // Update Firestore with the new URL
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user!.uid)
+            .update({'profilePictureUrl': downloadUrl});
+
+        setProfilePictureUrl(downloadUrl);
+      } else {
+        _logger.e('Upload failed with state: ${snapshot.state}');
+        throw Exception('Upload failed with state: ${snapshot.state}');
+      }
+    } else {
+      _logger.e('User is not authenticated');
+      throw Exception('User is not authenticated');
+    }
+  } catch (error) {
+    _logger.e('Error during upload: $error');
+    throw Exception('Error during upload: $error');
+  }
+}
 }
