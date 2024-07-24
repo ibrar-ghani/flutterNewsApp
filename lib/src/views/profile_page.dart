@@ -17,6 +17,7 @@ class ProfilePage extends StatelessWidget {
       profileController.setProfilePicture(File(pickedFile.path));
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,30 +26,32 @@ class ProfilePage extends StatelessWidget {
         foregroundColor: Colors.white,
         backgroundColor: Colors.blueAccent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            //profile picture
-            GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 50.0,
-                backgroundImage: profileController.profilePicture.value?.path != null
-                    ? FileImage(profileController.profilePicture.value!) as ImageProvider<Object>?
-                    : const AssetImage('assets/human-icon-png-1901.png'),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile picture
+              GestureDetector(
+                onTap: _pickImage,
+                child: Obx(() => CircleAvatar(
+                  radius: 150.0,
+                  backgroundImage: profileController.profilePicture.value?.path != null
+                      ? FileImage(profileController.profilePicture.value!) as ImageProvider<Object>?
+                      : const AssetImage('assets/human-icon-png-1901.png'),
+                )),
               ),
-            ),
-            const SizedBox(height: 16),
-            Obx(() => Text('Email: ${profileController.email}')),
-            Obx(() => Text('Name: ${profileController.name}')),
-            Obx(() => Text('Phone Number: ${profileController.phoneNumber}')),
-            Obx(() => Text('Address: ${profileController.address}')),
-          ],
+              const SizedBox(height: 16),
+              Obx(() => Text('Email: ${profileController.email}')),
+              Obx(() => Text('Name: ${profileController.name}')),
+              Obx(() => Text('Phone Number: ${profileController.phoneNumber}')),
+              Obx(() => Text('Address: ${profileController.address}')),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

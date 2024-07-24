@@ -14,6 +14,13 @@ class ProfileController extends GetxController {
 
   User? get user => FirebaseAuth.instance.currentUser;
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchUserData();
+    fetchAdditionalUserData();
+  }
+
   void setEmail(String value) {
     email.value = value;
   }
@@ -41,8 +48,8 @@ class ProfileController extends GetxController {
   Future<void> fetchUserData() async {
     try {
       if (user != null) {
+        _logger.i('User email: ${user!.email}');
         setEmail(user!.email ?? '');
-        setName(user!.displayName ?? '');
       }
     } catch (error) {
       _logger.e('Error fetching user data: $error');
@@ -59,6 +66,8 @@ class ProfileController extends GetxController {
                 .get();
 
         if (snapshot.exists) {
+          _logger.i('Additional user data: ${snapshot.data()}');
+          setName(snapshot.data()?['name'] ?? '');
           setPhoneNumber(snapshot.data()?['phoneNumber'] ?? '');
           setAddress(snapshot.data()?['address'] ?? '');
         }
