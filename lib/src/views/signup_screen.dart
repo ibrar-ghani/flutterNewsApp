@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/src/controllers/signup_controller.dart';
 
@@ -60,15 +61,44 @@ class SignupScreen extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: controller.phoneNumberController,
-                        decoration: const InputDecoration(
-                          labelText: 'Phone',
-                          labelStyle: TextStyle(color: Colors.black),
-                          hintText: 'Enter your Phone number',
-                          hintStyle: TextStyle(color: Colors.blueAccent),
-                          border: InputBorder.none,
-                        ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 60,
+                            child: TextField(
+                              controller: controller.countryCodeController,
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(r'[0-9+]')),
+                              ],
+                              decoration: const InputDecoration(
+                                labelText: 'Code',
+                                labelStyle: TextStyle(color: Colors.black),
+                                hintText: '+1',
+                                hintStyle: TextStyle(color: Colors.blueAccent),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              controller: controller.phoneNumberController,
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                LengthLimitingTextInputFormatter(10),
+                              ],
+                              decoration: const InputDecoration(
+                                labelText: 'Phone',
+                                labelStyle: TextStyle(color: Colors.black),
+                                hintText: 'Enter your phone number',
+                                hintStyle: TextStyle(color: Colors.blueAccent),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -130,17 +160,28 @@ class SignupScreen extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: controller.confirmPasswordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Confirm Password',
-                          labelStyle: TextStyle(color: Colors.black),
-                          hintText: 'Confirm your password',
-                          hintStyle: TextStyle(color: Colors.blueAccent),
-                          border: InputBorder.none,
-                        ),
-                      ),
+                      child: Obx(() {
+                        return TextField(
+                          controller: controller.confirmPasswordController,
+                          obscureText: true,
+                          onChanged: (value) => controller.validatePasswords(),
+                          decoration: InputDecoration(
+                            labelText: 'Confirm Password',
+                            labelStyle: TextStyle(color: Colors.black),
+                            hintText: 'Confirm your password',
+                            hintStyle: TextStyle(color: Colors.blueAccent),
+                            border: InputBorder.none,
+                            errorText: controller.isPasswordMatching.value
+                                ? null
+                                : 'Passwords do not match',
+                          ),
+                          style: TextStyle(
+                            color: controller.isPasswordMatching.value
+                                ? Colors.black
+                                : Colors.red,
+                          ),
+                        );
+                      }),
                     ),
                   ),
                 ),

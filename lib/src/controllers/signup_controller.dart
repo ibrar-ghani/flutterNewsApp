@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/src/services/auth_service.dart';
 
@@ -10,12 +11,26 @@ class SignupController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController countryCodeController = TextEditingController(text: '+1');
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
+  var isPasswordMatching = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    confirmPasswordController.addListener(validatePasswords);
+  }
+
+  void validatePasswords() {
+    isPasswordMatching.value =
+        passwordController.text == confirmPasswordController.text;
+  }
+
   Future<void> signup() async {
     try {
-      if (passwordController.text.trim() == confirmPasswordController.text.trim()) {
+      if (isPasswordMatching.value) {
         User? user = await _authService.signUp(
           emailController.text.trim(),
           passwordController.text.trim(),
@@ -24,7 +39,7 @@ class SignupController extends GetxController {
           user!.uid,
           emailController.text.trim(),
           nameController.text.trim(),
-          phoneNumberController.text.trim(),
+          '${countryCodeController.text.trim()}${phoneNumberController.text.trim()}',
           addressController.text.trim(),
         );
         clearFields();
@@ -43,6 +58,7 @@ class SignupController extends GetxController {
     passwordController.clear();
     confirmPasswordController.clear();
     nameController.clear();
+    countryCodeController.clear();
     phoneNumberController.clear();
     addressController.clear();
   }
@@ -64,6 +80,7 @@ class SignupController extends GetxController {
     passwordController.dispose();
     confirmPasswordController.dispose();
     nameController.dispose();
+    countryCodeController.dispose();
     phoneNumberController.dispose();
     addressController.dispose();
     super.onClose();
