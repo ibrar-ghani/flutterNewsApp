@@ -5,7 +5,7 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title:const Text('Help',      
         ),
@@ -13,13 +13,9 @@ class HelpScreen extends StatelessWidget {
       backgroundColor: Colors.blueAccent,
       ),
       body:const Center(
-        child: Text('1. How do I navigate through the app?'
-                     'To navigate through the App,'
-                    ' use the bottom navigation bar.'
-                    ' You can switch between different sections'
-                    ' such as Home, Search, and Profile.',
+        child: Text('Help Content Here',
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
         ),
         ),
       ),
