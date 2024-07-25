@@ -1,8 +1,7 @@
-// search_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/src/controllers/news_controller.dart';
-import 'package:routingexample/src/models/news_model.dart';
+import 'package:routingexample/src/views/article_card.dart';
 
 class SearchPage extends StatelessWidget {
   SearchPage({super.key});
@@ -24,7 +23,6 @@ class SearchPage extends StatelessWidget {
             child: TextField(
               controller: searchController,
               onChanged: (query) {
-                // Handle the search query here
                 newsController.fetchData(query: query);
               },
               decoration: InputDecoration(
@@ -54,40 +52,6 @@ class SearchPage extends StatelessWidget {
                       );
               },
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ArticleCard extends StatelessWidget {
-  final ArticleModel article;
-  const ArticleCard({super.key, required this.article});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(article.title ?? ''),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (article.author != null) Text('Author: ${article.author!}'),
-          if (article.publishedAt != null) Text('Published At: ${article.publishedAt!}'),
-          if (article.source != null) Text('Source: ${article.source!.name ?? ''}'),
-          Text(article.description ?? ''),
-          const SizedBox(height: 8.0),
-          if (article.urlToImage != null)
-            Image.network(
-              article.urlToImage!,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          const SizedBox(height: 8.0),
-          Text(
-            article.content ?? '',
-            maxLines: 5,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
