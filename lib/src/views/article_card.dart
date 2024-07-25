@@ -1,4 +1,3 @@
-// article_card.dart
 import 'package:flutter/material.dart';
 import 'package:routingexample/src/models/news_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,7 +31,7 @@ class ArticleCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _highlightText(article.title ?? '', searchQuery),
+              _highlightText(article.title ?? '', searchQuery, isTitle: true),
               const SizedBox(height: 10),
               if (article.author != null) Text('Author: ${article.author!}'),
               if (article.publishedAt != null) Text('Published At: ${article.publishedAt!}'),
@@ -63,9 +62,14 @@ class ArticleCard extends StatelessWidget {
     );
   }
 
-  Widget _highlightText(String text, String query) {
+  Widget _highlightText(String text, String query, {bool isTitle = false}) {
     if (query.isEmpty || !text.toLowerCase().contains(query.toLowerCase())) {
-      return Text(text);
+      return Text(
+        text,
+        style: isTitle
+            ? const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            : const TextStyle(fontSize: 16),
+      );
     }
 
     final matches = <TextSpan>[];
@@ -76,22 +80,36 @@ class ArticleCard extends StatelessWidget {
 
     while ((index = lowerText.indexOf(lowerQuery, start)) != -1) {
       if (index > start) {
-        matches.add(TextSpan(text: text.substring(start, index)));
+        matches.add(TextSpan(
+          text: text.substring(start, index),
+          style: isTitle
+              ? const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+              : const TextStyle(fontSize: 16),
+        ));
       }
       matches.add(TextSpan(
         text: text.substring(index, index + query.length),
-        style: const TextStyle(backgroundColor: Colors.yellow),
+        style: const TextStyle(
+          backgroundColor: Colors.yellow,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
       ));
       start = index + query.length;
     }
 
     if (start < text.length) {
-      matches.add(TextSpan(text: text.substring(start)));
+      matches.add(TextSpan(
+        text: text.substring(start),
+        style: isTitle
+            ? const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+            : const TextStyle(fontSize: 16),
+      ));
     }
 
     return RichText(
       text: TextSpan(
-        style: const TextStyle(color: Colors.black),
+        style: TextStyle(color: Colors.black, fontSize: isTitle ? 18 : 16),
         children: matches,
       ),
     );

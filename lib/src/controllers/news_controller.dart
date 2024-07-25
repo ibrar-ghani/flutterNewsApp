@@ -11,16 +11,17 @@ class NewsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchData();
+    fetchData(); // Fetch data on initialization
   }
 
   void clearData() {
     newsData.clear();
   }
 
-  Future<void> fetchData({String query = 'technology'}) async {
+  Future<void> fetchData({String query = 'technology', int page = 1}) async {
     try {
-      final uri = Uri.parse('https://newsapi.org/v2/everything?q=$query&apiKey=06d5928e7e9c42939b110b9ab671e75a');
+      clearData(); // Clear existing data before fetching new data
+      final uri = Uri.parse('https://newsapi.org/v2/everything?q=$query&sortBy=publishedAt&page=$page&apiKey=06d5928e7e9c42939b110b9ab671e75a');
       _logger.i('Fetching data from: $uri');
 
       final response = await http.get(uri);

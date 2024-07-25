@@ -1,6 +1,8 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:routingexample/src/controllers/news_controller.dart';
+import 'package:routingexample/src/services/auth_service.dart';
 import 'src/services/routes.dart';
 import 'package:routingexample/src/views/splash_screen.dart';
 import 'package:routingexample/src/views/signup_screen.dart';
@@ -19,6 +21,8 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(NewsController());
+  Get.put(AuthService()); 
   runApp(const MyApp());
 }
 

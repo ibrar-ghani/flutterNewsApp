@@ -9,16 +9,18 @@ class NewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => newsController.newsData.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: newsController.newsData.length,
-              itemBuilder: (context, index) {
-                final newsItem = newsController.newsData[index];
-                return ArticleCard(article: newsItem, searchQuery: '',);
-              },
-            ),
-    );
+    return Obx(() {
+      if (newsController.newsData.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        return ListView.builder(
+          itemCount: newsController.newsData.length,
+          itemBuilder: (context, index) {
+            final newsItem = newsController.newsData[index];
+            return ArticleCard(article: newsItem, searchQuery: '');
+          },
+        );
+      }
+    });
   }
 }

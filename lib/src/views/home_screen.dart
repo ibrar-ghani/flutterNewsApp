@@ -7,11 +7,14 @@ import 'package:routingexample/src/services/auth_service.dart'; // Import AuthSe
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-  final NewsController newsController = Get.put(NewsController());
+  final NewsController newsController = Get.find<NewsController>();
   final AuthService _authService = AuthService(); // Create an instance of AuthService
 
   @override
   Widget build(BuildContext context) {
+    // Fetch new articles each time the HomeScreen is built
+    newsController.fetchData(query: 'technology', page: 1); // Adjust page number if needed
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -23,7 +26,7 @@ class HomeScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
-          PopupMenuButton(
+          PopupMenuButton<String>(
             itemBuilder: (BuildContext context) => [
               const PopupMenuItem<String>(
                 value: 'aboutUs',
@@ -49,7 +52,7 @@ class HomeScreen extends StatelessWidget {
               const PopupMenuItem<String>(
                 value: 'login',
                 child: Text(
-                  'LogOut',
+                  'Log Out',
                   style: TextStyle(color: Colors.red),
                 ),
               ),
@@ -72,6 +75,7 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
+              // Refresh HomeScreen to fetch new data
               Get.offAll(() => HomeScreen());
               break;
             case 1:
