@@ -1,3 +1,4 @@
+// search_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:routingexample/src/controllers/news_controller.dart';
@@ -23,6 +24,7 @@ class SearchPage extends StatelessWidget {
             child: TextField(
               controller: searchController,
               onChanged: (query) {
+                // Handle the search query here
                 newsController.fetchData(query: query);
               },
               decoration: InputDecoration(
@@ -39,12 +41,13 @@ class SearchPage extends StatelessWidget {
             child: Obx(
               () {
                 final searchResults = newsController.newsData;
+                final query = searchController.text.trim();
                 return searchResults.isNotEmpty
                     ? ListView.builder(
                         itemCount: searchResults.length,
                         itemBuilder: (context, index) {
                           final result = searchResults[index];
-                          return ArticleCard(article: result);
+                          return ArticleCard(article: result, searchQuery: query);
                         },
                       )
                     : const Center(

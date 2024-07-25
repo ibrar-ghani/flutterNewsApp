@@ -1,10 +1,13 @@
+// article_card.dart
 import 'package:flutter/material.dart';
 import 'package:routingexample/src/models/news_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleCard extends StatelessWidget {
   final ArticleModel article;
-  const ArticleCard({super.key, required this.article});
+  final String searchQuery;
+
+  const ArticleCard({super.key, required this.article, required this.searchQuery});
 
   Future<void> _launchURL(BuildContext context, String url) async {
     final Uri uri = Uri.parse(url);
@@ -29,16 +32,13 @@ class ArticleCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                article.title ?? '',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              _highlightText(article.title ?? '', searchQuery),
               const SizedBox(height: 10),
               if (article.author != null) Text('Author: ${article.author!}'),
               if (article.publishedAt != null) Text('Published At: ${article.publishedAt!}'),
               if (article.source != null) Text('Source: ${article.source!.name ?? ''}'),
               const SizedBox(height: 10),
-              Text(article.description ?? ''),
+              _highlightText(article.description ?? '', searchQuery),
               const SizedBox(height: 10),
               if (article.urlToImage != null)
                 Image.network(
@@ -55,14 +55,44 @@ class ArticleCard extends StatelessWidget {
                   },
                 ),
               const SizedBox(height: 10),
-              Text(
-                article.content ?? '',
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              ),
+              _highlightText(article.content ?? '', searchQuery),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _highlightText(String text, String query) {
+    if (query.isEmpty || !text.toLowerCase().contains(query.toLowerCase())) {
+      return Text(text);
+    }
+
+    final matches = <TextSpan>[];
+    int start = 0;
+    int index;
+    final lowerText = text.toLowerCase();
+    final lowerQuery = query.toLowerCase();
+
+    while ((index = lowerText.indexOf(lowerQuery, start)) != -1) {
+      if (index > start) {
+        matches.add(TextSpan(text: text.substring(start, index)));
+      }
+      matches.add(TextSpan(
+        text: text.substring(index, index + query.length),
+        style: const TextStyle(backgroundColor: Colors.yellow),
+      ));
+      start = index + query.length;
+    }
+
+    if (start < text.length) {
+      matches.add(TextSpan(text: text.substring(start)));
+    }
+
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(color: Colors.black),
+        children: matches,
       ),
     );
   }

@@ -16,7 +16,7 @@ class NewsScreen extends StatelessWidget {
               itemCount: newsController.newsData.length,
               itemBuilder: (context, index) {
                 final newsItem = newsController.newsData[index];
-                return ArticleCard(article: newsItem);
+                return ArticleCard(article: newsItem, searchQuery: '',);
               },
             ),
     );
